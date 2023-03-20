@@ -1,3 +1,4 @@
+import allure
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -11,9 +12,11 @@ class AuthPage:
         self.__url = "https://trello.com/login"
         self.__driver = __driver
 
+    @allure.step("Открыть страницу для авторизации")
     def go(self):
         self.__driver.get(self.__url)
 
+    @allure.step("Авторизоваться под {email} : {password}")
     def login_as(self, email: str, password: str):
         self.__driver.find_element(By.CSS_SELECTOR, "input#user").send_keys(email)
         self.__driver.find_element(By.CSS_SELECTOR, "input#login").click()
