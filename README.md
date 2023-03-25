@@ -22,6 +22,7 @@
 - ./pages - описание страниц
 - ./api - хелперы по работе с API
 - ./db - хелперы по работе с БД
+- test_config.ini - настройки для тестов
 
 ### Полезные ссылки
 - [Генератор файла .gitignore](https://www.toptal.com/developers/gitignore)

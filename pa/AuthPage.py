@@ -4,12 +4,14 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from configuration.ConfigProvider import ConfigProvider
 
 
 class AuthPage:
 
     def __init__(self, __driver: WebDriver):
-        self.__url = "https://trello.com/login"
+        url = ConfigProvider().getint("ui", "base_url")
+        self.__url = url+"/login"
         self.__driver = __driver
 
     @allure.step("Открыть страницу для авторизации")

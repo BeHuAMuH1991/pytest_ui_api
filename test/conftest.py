@@ -2,13 +2,17 @@ import allure
 import pytest
 from selenium import webdriver
 from api.BoardApi import BoardApi
+from configuration.ConfigProvider import ConfigProvider
 
 
 @pytest.fixture
 def browser():
     with allure.step("Открыть браузер"):
+
+        timeout = ConfigProvider().getint("ui", "timeout")
+
         browser = webdriver.Chrome()
-        browser.implicitly_wait(4)
+        browser.implicitly_wait(timeout)
         browser.maximize_window()
         yield browser
     with allure.step("Закрыть браузер"):
@@ -17,15 +21,16 @@ def browser():
 
 @pytest.fixture
 def api_client() -> BoardApi:
-    return BoardApi("https://api.trello.com/1/", "62979d93ce5f5f881035c524/ATTSE1qlqYpi5GsabKFmJvTWqSkyYHs10So9QwqFGrIFSKXT0r5N32DuqLvz6bnrP2J61825288A")
+    url = ConfigProvider().get("api", "base_url")
+    return BoardApi(url, "62979d93ce5f5f881035c524/ATTSE1qlqYpi5GsabKFmJvTWqSkyYHs10So9QwqFGrIFSKXT0r5N32DuqLvz6bnrP2J61825288A")
 
 @pytest.fixture
 def api_client_no_auth() -> BoardApi:
-    return BoardApi("https://api.trello.com/1/", "")
+    return BoardApi(ConfigProvider().get("api", "base_url"), "")
 
 @pytest.fixture
 def create_dummy_board():
-    api  = BoardApi("https://api.trello.com/1/", "62979d93ce5f5f881035c524/ATTSE1qlqYpi5GsabKFmJvTWqSkyYHs10So9QwqFGrIFSKXT0r5N32DuqLvz6bnrP2J61825288A")
+    api  = BoardApi(ConfigProvider().get("api", "base_url"), "62979d93ce5f5f881035c524/ATTSE1qlqYpi5GsabKFmJvTWqSkyYHs10So9QwqFGrIFSKXT0r5N32DuqLvz6bnrP2J61825288A")
     resp = api.create_board("Доска для удаления").get("id")
     return resp
 
@@ -33,5 +38,5 @@ def create_dummy_board():
 def delete_board() ->str:
     dictionary = {"board_id" : ""}
     yield dictionary
-    api  = BoardApi("https://api.trello.com/1/", "62979d93ce5f5f881035c524/ATTSE1qlqYpi5GsabKFmJvTWqSkyYHs10So9QwqFGrIFSKXT0r5N32DuqLvz6bnrP2J61825288A")
+    api  = BoardApi(ConfigProvider().get("api", "base_url"), "62979d93ce5f5f881035c524/ATTSE1qlqYpi5GsabKFmJvTWqSkyYHs10So9QwqFGrIFSKXT0r5N32DuqLvz6bnrP2J61825288A")
     resp = api.remove_board(dictionary.get("board_id"))
