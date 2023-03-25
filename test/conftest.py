@@ -3,6 +3,7 @@ import pytest
 from selenium import webdriver
 from api.BoardApi import BoardApi
 from configuration.ConfigProvider import ConfigProvider
+from test_data.DataProvider import DataProvider
 
 
 @pytest.fixture
@@ -21,8 +22,9 @@ def browser():
 
 @pytest.fixture
 def api_client() -> BoardApi:
+    
     url = ConfigProvider().get("api", "base_url")
-    return BoardApi(url, "62979d93ce5f5f881035c524/ATTSE1qlqYpi5GsabKFmJvTWqSkyYHs10So9QwqFGrIFSKXT0r5N32DuqLvz6bnrP2J61825288A")
+    return BoardApi(url, DataProvider().get("token"))
 
 @pytest.fixture
 def api_client_no_auth() -> BoardApi:
@@ -30,7 +32,7 @@ def api_client_no_auth() -> BoardApi:
 
 @pytest.fixture
 def create_dummy_board():
-    api  = BoardApi(ConfigProvider().get("api", "base_url"), "62979d93ce5f5f881035c524/ATTSE1qlqYpi5GsabKFmJvTWqSkyYHs10So9QwqFGrIFSKXT0r5N32DuqLvz6bnrP2J61825288A")
+    api  = BoardApi(ConfigProvider().get("api", "base_url"), DataProvider().get("token"))
     resp = api.create_board("Доска для удаления").get("id")
     return resp
 
@@ -38,5 +40,9 @@ def create_dummy_board():
 def delete_board() ->str:
     dictionary = {"board_id" : ""}
     yield dictionary
-    api  = BoardApi(ConfigProvider().get("api", "base_url"), "62979d93ce5f5f881035c524/ATTSE1qlqYpi5GsabKFmJvTWqSkyYHs10So9QwqFGrIFSKXT0r5N32DuqLvz6bnrP2J61825288A")
+    api  = BoardApi(ConfigProvider().get("api", "base_url"), DataProvider().get("token"))
     resp = api.remove_board(dictionary.get("board_id"))
+
+@pytest.fixture
+def test_data():
+    return DataProvider()

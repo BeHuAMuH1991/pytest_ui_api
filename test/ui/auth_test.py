@@ -1,12 +1,13 @@
 import allure
 from pa.AuthPage import AuthPage
 from pa.MainPage import MainPage
+from time import sleep
 
 
-def test_auth(browser):
-    email = "torhovaleksej@gmail.com"
-    password = "behuamuh078"
-    name = "Алeксей Торхов"
+def test_auth(browser, test_data):
+    email = test_data.get("email")
+    password = test_data.get("password")
+    name = test_data.get("name")
 
     auth_page = AuthPage(browser)
     auth_page.go()
@@ -15,6 +16,7 @@ def test_auth(browser):
     main_page = MainPage(browser)
     main_page.open_menu()
     info = main_page.get_account_info()
+    sleep(20)
 
     with allure.step("Проверяем имя и почту"):
         with allure.step("Имя: "+name):
