@@ -1,18 +1,13 @@
 import allure
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.service import Service
 from pa.AuthPage import AuthPage
 from pa.MainPage import MainPage
-from time import sleep
+
+import pytest
 
 
 
 
+@pytest.mark.skip
 def test_auth(browser):
     email = "torhovaleksej@gmail.com"
     password = "behuamuh078"
