@@ -2,8 +2,9 @@ import allure
 import pytest
 from selenium import webdriver
 from api.BoardApi import BoardApi
+from pa.MainPage import MainPage
 from configuration.ConfigProvider import ConfigProvider
-from test_data.DataProvider import DataProvider
+from data.DataProvider import DataProvider
 
 
 @pytest.fixture
@@ -38,10 +39,9 @@ def create_dummy_board():
 
 @pytest.fixture
 def delete_board() ->str:
-    dictionary = {"board_id" : ""}
-    yield dictionary
-    api  = BoardApi(ConfigProvider().get("api", "base_url"), DataProvider().get("token"))
-    resp = api.remove_board(dictionary.get("board_id"))
+    yield
+    ui = MainPage()
+    ui.delete_board
 
 @pytest.fixture
 def test_data():
